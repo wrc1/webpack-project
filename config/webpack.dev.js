@@ -1,5 +1,6 @@
 const path = require("path")
 const webpack = require("webpack");
+const HTMLWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -18,6 +19,7 @@ module.exports = {
       colors: true
     }
   },
+  devtool: "source-map", 
   module: {
     rules: [
       {
@@ -34,7 +36,7 @@ module.exports = {
         use: [{ loader: "style-loader" }, { loader: "css-loader" }]
       },
       {
-        test: /\.jpg$/,
+        test: /\.(jpg|svg)$/,
         use: [
           {
             loader: "file-loader",
@@ -48,25 +50,19 @@ module.exports = {
         test: /\.html$/,
         use: [
           {
-            loader: "file-loader",
+            loader: "html-loader",
             options: {
-              name: "[name].[ext]"
+              attrs: ["img:src"]
             }
-          },
-          {
-            loader: "extract-loader",
-            options: {
-              publicPath: "../"
-            }
-          },
-          {
-            loader: "html-loader"
           }
         ]
       }
     ]
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new HTMLWebpackPlugin({
+      template: "./src/index.html"
+    })
   ]
 }
