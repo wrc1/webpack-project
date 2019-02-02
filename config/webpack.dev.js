@@ -6,7 +6,7 @@ const HTMLWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: {
-    main: "./src/main.js"
+    main: "./src/main.js",
   },
   mode: "development",
   output: {
@@ -46,6 +46,7 @@ module.exports = {
         use: [
           { loader: "style-loader" },
           { loader: "css-loader" },
+          { loader: "postcss-loader" },
           { loader: "sass-loader" }
         ]
       },
