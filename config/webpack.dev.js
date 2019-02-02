@@ -1,4 +1,6 @@
 const path = require("path")
+const nodeExternals = require('webpack-node-externals');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require("webpack");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 
@@ -20,6 +22,7 @@ module.exports = {
     }
   },
   devtool: "source-map", 
+  externals: [nodeExternals()], // update 23.12.2018
   module: {
     rules: [
       {
@@ -39,9 +42,10 @@ module.exports = {
         ]
       },
       {
-        test: /\.sass$/,
+        test: /\.scss$/,
         use: [
           { loader: "style-loader" },
+          MiniCssExtractPlugin.loader,
           { loader: "css-loader" },
           { loader: "sass-loader" }
         ]
