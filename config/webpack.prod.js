@@ -1,6 +1,7 @@
 const path = require("path")
 // const nodeExternals = require('webpack-node-externals');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const webpack = require("webpack");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 
@@ -45,9 +46,9 @@ module.exports = {
           { loader: MiniCssExtractPlugin.loader },
           { 
               loader: "css-loader",  
-              options: {
-                minimize: true
-              }
+            //   options: {
+            //     minimize: true
+            //   }
           },
           { loader: "postcss-loader" },
           { loader: "sass-loader" }
@@ -78,6 +79,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new OptimizeCssAssetsPlugin(),
     new MiniCssExtractPlugin(),  
     new HTMLWebpackPlugin({
       template: "./src/index.html"
