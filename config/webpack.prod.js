@@ -1,4 +1,6 @@
 const path = require("path")
+// const nodeExternals = require('webpack-node-externals');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require("webpack");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 
@@ -6,20 +8,12 @@ module.exports = {
   entry: {
     main: "./src/main.js",
   },
-  mode: "development",
+  mode: "production",
   output: {
     filename: "[name]-bundle.js",
     path: path.resolve(__dirname, "../dist")
   },
-  devServer: {
-    contentBase: "dist",
-    overlay: true,
-    hot: true,
-    stats: {
-      colors: true
-    }
-  },
-  devtool: "source-map", 
+  // externals: [nodeExternals()], // update 23.12.2018
   module: {
     rules: [
       {
@@ -34,15 +28,27 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          { loader: "style-loader" },
-          { loader: "css-loader" }
+          { 
+              loader: MiniCssExtractPlugin.loader 
+          },
+          { 
+              loader: "css-loader",
+              options: {
+                  minimize: true
+              }
+          }
         ]
       },
       {
         test: /\.scss$/,
         use: [
-          { loader: "style-loader" },
-          { loader: "css-loader" },
+          { loader: MiniCssExtractPlugin.loader },
+          { 
+              loader: "css-loader",  
+              options: {
+                minimize: true
+              }
+          },
           { loader: "postcss-loader" },
           { loader: "sass-loader" }
         ]
@@ -72,7 +78,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    new MiniCssExtractPlugin(),  
     new HTMLWebpackPlugin({
       template: "./src/index.html"
     })
